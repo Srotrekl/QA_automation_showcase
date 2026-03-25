@@ -46,3 +46,18 @@ class TestCart:
 
         cart.remove_first_item()
         assert cart.get_item_count() == 0, "Košík by měl být prázdný po odebrání"
+
+    @pytest.mark.regression
+    def test_continue_shopping_returns_to_inventory(self, logged_in_page: Page) -> None:
+        """Klik na Continue Shopping v košíku vrátí na inventory."""
+        # Přidej produkt a jdi do košíku
+        inventory = InventoryPage(logged_in_page)
+        inventory.add_product_to_cart(index=0)
+        inventory.go_to_cart()
+
+        # Klikni Continue Shopping
+        cart = CartPage(logged_in_page)
+        cart.continue_shopping()
+
+        # Ověř že jsme zpět na inventory
+        assert "inventory.html" in logged_in_page.url
