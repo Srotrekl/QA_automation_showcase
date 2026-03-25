@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# pytest
+.pytest_cache/
+
+# Allure
+allure-results/
+allure-report/
+
+# Playwright
+test-results/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

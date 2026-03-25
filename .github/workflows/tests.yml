@@ -1,0 +1,60 @@
+name: QA Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium, firefox]
+
+    steps:
+      - name: Checkout kódu
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalace závislostí
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Instalace Playwright prohlížeče
+        run: playwright install ${{ matrix.browser }} --with-deps
+
+      - name: Spuštění testů
+        env:
+          BROWSER: ${{ matrix.browser }}
+          HEADLESS: "true"
+          UI_BASE_URL: ${{ vars.UI_BASE_URL || 'https://www.saucedemo.com' }}
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'https://restful-booker.herokuapp.com' }}
+          UI_USERNAME: ${{ secrets.UI_USERNAME }}
+          UI_PASSWORD: ${{ secrets.UI_PASSWORD }}
+          API_USERNAME: ${{ secrets.API_USERNAME }}
+          API_PASSWORD: ${{ secrets.API_PASSWORD }}
+        run: pytest --alluredir=allure-results -v --tb=short
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: allure-results/
+          retention-days: 30
+
+      - name: Upload test artifacts (screenshoty, video)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.browser }}
+          path: test-results/
+          retention-days: 14

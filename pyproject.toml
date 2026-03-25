@@ -1,0 +1,26 @@
+[project]
+name = "qa-automation-showcase"
+version = "1.0.0"
+description = "QA automation portfolio — UI (Playwright) & API (requests) testy nad SauceDemo a Restful Booker"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "smoke: Quick sanity checks — run first after every change",
+    "regression: Full regression suite",
+    "negative: Invalid input and error handling scenarios",
+    "api: REST API tests (Restful Booker)",
+    "ui: Browser UI tests (SauceDemo)",
+]
+addopts = "--strict-markers -v"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["config", "pages", "utils"]
