@@ -46,6 +46,13 @@ class TestInventoryRegression:
         prices = inventory.get_product_prices()
         assert prices == sorted(prices), f"Ceny nejsou seřazeny vzestupně: {prices}"
 
+    def test_sort_products_by_price_high_to_low(self, logged_in_page: Page) -> None:
+        """Sorting 'Price (high to low)' — ceny jsou seřazeny sestupně."""
+        inventory = InventoryPage(logged_in_page)
+        inventory.sort_products("hilo")
+        prices = inventory.get_product_prices()
+        assert prices == sorted(prices, reverse=True), f"Ceny nejsou seřazeny sestupně: {prices}"
+
     def test_sort_products_by_name_z_to_a(self, logged_in_page: Page) -> None:
         """Sorting 'Name (Z to A)' — jména jsou seřazena sestupně."""
         inventory = InventoryPage(logged_in_page)

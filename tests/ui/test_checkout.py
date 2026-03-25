@@ -69,6 +69,15 @@ class TestCheckoutNegative:
         error = checkout.get_error_message()
         assert "Postal Code is required" in error, f"Unexpected error: {error}"
 
+    def test_checkout_missing_last_name(self, logged_in_page: Page) -> None:
+        """Checkout bez příjmení → error 'Last Name is required'."""
+        self._navigate_to_checkout(logged_in_page)
+        checkout = CheckoutPage(logged_in_page)
+        checkout.fill_checkout_info("Jan", "", "12345")
+        checkout.click_continue()
+        error = checkout.get_error_message()
+        assert "Last Name is required" in error, f"Unexpected error: {error}"
+
     @staticmethod
     def _navigate_to_checkout(page: Page) -> None:
         """Helper — přidá produkt a naviguje na checkout step-one."""
