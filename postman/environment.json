@@ -1,0 +1,10 @@
+{
+  "name": "Restful Booker - CI",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "https://restful-booker.herokuapp.com",
+      "enabled": true
+    }
+  ]
+}

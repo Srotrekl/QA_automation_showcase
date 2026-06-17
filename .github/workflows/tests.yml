@@ -58,3 +58,21 @@ jobs:
           name: test-results-${{ matrix.browser }}
           path: test-results/
           retention-days: 14
+
+  postman:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kódu
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalace Newman
+        run: npm install -g newman@6.2.1
+
+      - name: Spuštění Postman kolekce
+        continue-on-error: true
+        run: newman run postman/Restful_Booker.postman_collection.json -e postman/environment.json

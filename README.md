@@ -118,16 +118,24 @@ Detailní matice pokrytí viz [docs/TEST_STRATEGY.md](docs/TEST_STRATEGY.md).
 - **Node.js** (volitelné, pro `npm install -g allure-commandline`)
 - **OS:** Windows, Linux, macOS
 
-## Postman kolekce
+## Postman + Newman (API testy nástrojem)
 
-Manuální API testy pro Restful Booker jsou v `postman/` složce.
+Stejná doména (Restful Booker) testovaná druhým nástrojem — Postman kolekce
+běžící v CI přes Newman. Ukazuje API testing jako nástrojovou dovednost
+vedle kódové (pytest/requests).
+
+Kolekce: chaining přes env proměnné (auth token → bookingId → ověření dat),
+assertiony v Tests tabu, negative cases (neexistující booking → 404, bez auth → 403).
 
 ```bash
-# Import do Postmanu:
-# File → Import → vybrat postman/Restful_Booker.postman_collection.json
+# Lokální běh přes Newman
+newman run postman/Restful_Booker.postman_collection.json -e postman/environment.json
+
+# Import do Postman GUI:
+# File → Import → postman/Restful_Booker.postman_collection.json
 ```
 
-Kolekce obsahuje: Auth (token), CRUD (create, read, update, delete), Negative (neexistující booking, bez auth).
+CI spouští kolekci automaticky v samostatném `postman` jobu (viz badge nahoře).
 
 ## Dokumentace
 
