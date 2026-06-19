@@ -106,10 +106,18 @@ Detailní matice pokrytí viz [docs/TEST_STRATEGY.md](docs/TEST_STRATEGY.md).
 | Oblast | Smoke | Regression | Negative |
 |--------|:-----:|:----------:|:--------:|
 | Login (UI) | 2 | 1 | 4 |
-| Inventory (UI) | 2 | 6 | — |
+| Inventory (UI) | 2 | 6 | 1 |
 | Cart & Checkout (UI) | 2 | 2 | 3 |
 | Auth (API) | 1 | — | 1 |
 | Booking CRUD (API) | 2 | 5 | 3 |
+
+## Nálezy (Findings)
+
+Testy nejsou jen formální pokrytí — reálně našly bug v testované aplikaci, zdokumentovaný podle [bug report šablony](docs/BUG_REPORT_TEMPLATE.md):
+
+| ID | Popis | Severity | Report |
+|---|---|---|---|
+| BUG-001 | `problem_user` — všechny produkty mají identický rozbitý obrázek místo unikátních fotek | Major | [docs/findings/BUG-001_problem_user_broken_images.md](docs/findings/BUG-001_problem_user_broken_images.md) |
 
 ## Prerequisites
 

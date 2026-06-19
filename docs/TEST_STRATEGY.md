@@ -62,7 +62,7 @@ pytest tests/ui/test_login.py -v
 | Funkce | Smoke | Regression | Negative |
 |--------|:-----:|:----------:|:--------:|
 | Login (UI) | test_login_standard_user | test_logout | test_login_locked_out_user, test_login_invalid_credentials |
-| Inventory (UI) | test_inventory_page_displays_products, test_add_product_to_cart | test_sort_*, test_add_multiple_*, test_product_detail, test_cross_browser | — |
+| Inventory (UI) | test_inventory_page_displays_products, test_add_product_to_cart | test_sort_*, test_add_multiple_*, test_product_detail, test_cross_browser | test_problem_user_sees_unique_product_images (BUG-001) |
 | Cart (UI) | test_cart_displays_added_items | test_remove_item_from_cart | — |
 | Checkout (UI) | test_checkout_complete_flow | test_checkout_item_total_matches | test_checkout_missing_* |
 | Auth (API) | test_auth_creates_token | — | test_auth_invalid_credentials |

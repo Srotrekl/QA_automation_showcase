@@ -81,6 +81,48 @@ class TestInventoryRegression:
 
 
 @allure.feature("Inventory")
+@pytest.mark.negative
+@pytest.mark.ui
+class TestInventoryNegative:
+    """Negative testy — problem_user a jiné záměrně rozbité perzony."""
+
+    @pytest.mark.xfail(
+        reason="BUG-001: problem_user — známý nález v testované aplikaci, "
+        "viz docs/findings/BUG-001_problem_user_broken_images.md",
+        strict=True,
+    )
+    def test_problem_user_sees_unique_product_images(self, page: Page) -> None:
+        """Bug BUG-001: u problem_user mají všechny produkty stejný 404 obrázek.
+
+        Reprodukce: docs/findings/BUG-001_problem_user_broken_images.md
+        """
+        login = LoginPage(page)
+        login.open()
+        login.login("problem_user", "secret_sauce")
+        page.wait_for_url("**/inventory.html")
+
+        inventory = InventoryPage(page)
+        srcs = inventory.get_product_image_srcs()
+
+        allure.attach(
+            page.screenshot(full_page=True),
+            name="problem_user inventory screenshot",
+            attachment_type=allure.attachment_type.PNG,
+        )
+        allure.attach(
+            "\n".join(srcs),
+            name="Product image src attributes",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+        unique_srcs = set(srcs)
+        assert len(unique_srcs) == len(srcs), (
+            f"Očekáváno {len(srcs)} unikátních obrázků, nalezeno {len(unique_srcs)} "
+            f"— viz docs/findings/BUG-001_problem_user_broken_images.md"
+        )
+
+
+@allure.feature("Inventory")
 @allure.story("Cross-browser")
 @pytest.mark.regression
 @pytest.mark.ui

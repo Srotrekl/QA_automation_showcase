@@ -22,6 +22,7 @@ class InventoryPage(BasePage):
     ADD_TO_CART_BUTTON = "button[data-test^='add-to-cart']"
     BURGER_MENU = "#react-burger-menu-btn"
     LOGOUT_LINK = "#logout_sidebar_link"
+    ITEM_IMAGE = ".inventory_item_img img"
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
@@ -38,6 +39,10 @@ class InventoryPage(BasePage):
         """Vrátí seznam cen všech produktů (jako float, bez $)."""
         raw_prices = self.page.locator(self.ITEM_PRICE).all_text_contents()
         return [float(p.replace("$", "")) for p in raw_prices]
+
+    def get_product_image_srcs(self) -> list[str]:
+        """Vrátí seznam `src` atributů obrázků všech produktů."""
+        return self.page.locator(self.ITEM_IMAGE).evaluate_all("els => els.map(e => e.src)")
 
     @allure.step("Seřazení produktů: {option}")
     def sort_products(self, option: str) -> None:
