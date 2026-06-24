@@ -1,0 +1,3 @@
+allure-report/** linguist-vendored
+allure-results/** linguist-vendored
+*.html linguist-detectable=false
