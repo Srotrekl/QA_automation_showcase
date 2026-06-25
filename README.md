@@ -1,157 +1,153 @@
 # QA Automation Showcase
 
-![CI](https://github.com/Srotrekl/QA_automation_showcase/actions/workflows/tests.yml/badge.svg)
-![Python](https://img.shields.io/badge/python-3.11-blue)
-![Tests](https://img.shields.io/badge/tests-39%20passed-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![CI](https://github.com/Srotrekl/QA_automation_showcase/actions/workflows/tests.yml/badge.svg)](https://github.com/Srotrekl/QA_automation_showcase/actions/workflows/tests.yml)
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/tests-39%20passed-brightgreen)](#test-coverage)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-End-to-end UI a REST API test suite nad **SauceDemo** a **Restful Booker** — pytest, Playwright, requests, Allure reporting, Postman.
+End-to-end UI and REST API test suite for **SauceDemo** and **Restful Booker** — pytest, Playwright, Allure reporting, Postman/Newman, CI/CD on every push.
+
+**39 tests · UI + API · 2 browsers in CI · real bug found & documented**
+
+---
+
+## What this demonstrates
+
+| Skill | How it shows up |
+|---|---|
+| **UI E2E testing** | Playwright + Page Object Model across login, cart, checkout flows |
+| **REST API testing** | pytest + requests: auth, CRUD, negative scenarios (404, 403) |
+| **Test design** | Smoke / regression / negative markers; parametrised test data from JSON |
+| **Reporting** | Allure with step-level detail, screenshots on failure |
+| **CI/CD** | GitHub Actions: 2-browser matrix (Chromium, Firefox), Allure artifacts |
+| **Tool breadth** | Same API domain tested twice — pytest/requests + Postman/Newman |
+| **Bug reporting** | Real defect found, documented with reproduction steps and severity |
+
+---
 
 ## Tech Stack
 
-| Technologie | Verze | Účel |
-|-------------|-------|------|
-| **pytest** | 8.3.4 | Test runner, fixtures, markery |
-| **Playwright** | 1.49.1 | UI E2E testy (POM) |
-| **requests** | 2.32.3 | REST API testy |
-| **Allure** | 2.13.5 | Reporting (kroky, screenshoty) |
-| **pydantic-settings** | 2.7.1 | Konfigurace (env variables) |
-| **jsonschema** | 4.23.0 | API response validace |
-| **ruff** | 0.8.6 | Linting + formátování |
+| Technology | Version | Purpose |
+|---|---|---|
+| **pytest** | 8.3.4 | Test runner, fixtures, markers |
+| **Playwright** | 1.49.1 | Browser automation (Page Object Model) |
+| **requests** | 2.32.3 | REST API testing |
+| **Allure** | 2.13.5 | Reporting — steps, screenshots, attachments |
+| **pydantic-settings** | 2.7.1 | Typed environment configuration |
+| **jsonschema** | 4.23.0 | API response schema validation |
+| **ruff** | 0.8.6 | Linting and formatting |
 | **GitHub Actions** | — | CI/CD pipeline |
 
-## Architektura
+---
+
+## Project Structure
 
 ```
 qa-automation-showcase/
-├── config/          # Centrální konfigurace (env variables)
-├── docs/            # Test strategy, bug report template
+├── config/          # Centralised env variable configuration
+├── docs/            # Test strategy, bug report template, findings
 ├── pages/           # Page Object Model (SauceDemo)
-├── postman/         # Postman kolekce (manuální API testy)
+├── postman/         # Postman collection + Newman CI integration
 ├── tests/
-│   ├── api/         # REST API testy (Restful Booker)
-│   └── ui/          # UI E2E testy (SauceDemo)
-├── test_data/       # Testovací data (JSON)
+│   ├── api/         # REST API tests (Restful Booker)
+│   └── ui/          # UI E2E tests (SauceDemo)
+├── test_data/       # JSON test data files
 ├── utils/           # API client, logger, Allure helpers
-├── .env.example     # Ukázkový .env
-├── pyproject.toml   # pytest + ruff konfigurace
-└── requirements.txt # Pinned závislosti
+├── .env.example     # Environment variable template
+├── pyproject.toml   # pytest + ruff configuration
+└── requirements.txt # Pinned dependencies
 ```
+
+---
 
 ## Quick Start
 
 ```bash
-# 1. Klonuj repozitář
 git clone https://github.com/Srotrekl/QA_automation_showcase.git
-cd qa-automation-showcase
+cd QA_automation_showcase
 
-# 2. Vytvoř a aktivuj virtuální prostředí
 python -m venv venv
-source venv/bin/activate        # Linux/Mac
-# venv\Scripts\activate         # Windows
+source venv/bin/activate        # Windows: venv\Scripts\activate
 
-# 3. Nainstaluj závislosti
 pip install -r requirements.txt
-
-# 4. Nainstaluj Playwright prohlížeče
 playwright install chromium
 
-# 5. Nastav environment variables
 cp .env.example .env
-# Uprav .env pokud potřebuješ změnit výchozí hodnoty
-
-# 6. Spusť smoke testy
 pytest -m smoke
 ```
 
-## Spouštění testů
+---
+
+## Running Tests
 
 ```bash
-# Smoke testy (rychlá kontrola)
-pytest -m smoke
-
-# Kompletní regrese
-pytest -m regression
-
-# Jen API testy
-pytest tests/api/ -v
-
-# Jen UI testy
-pytest tests/ui/ -v
-
-# Negative testy
-pytest -m negative
-
-# Konkrétní soubor
-pytest tests/ui/test_login.py -v
+pytest -m smoke          # Quick sanity check
+pytest -m regression     # Full regression suite
+pytest tests/api/ -v     # API tests only
+pytest tests/ui/ -v      # UI tests only
+pytest -m negative       # Negative scenarios
 ```
+
+---
 
 ## Allure Report
 
 ```bash
-# Spusť testy s Allure výstupem
 pytest --alluredir=allure-results
-
-# Otevři report v prohlížeči
 allure serve allure-results
 ```
 
-> **Prerequisite:** Allure CLI vyžaduje Java Runtime (JRE 8+).
-> Instalace: `npm install -g allure-commandline` nebo [allure docs](https://docs.qameta.io/allure/).
+> Requires Java 8+ and Allure CLI: `npm install -g allure-commandline`
 
-## Testovací pokrytí
+---
 
-Detailní matice pokrytí viz [docs/TEST_STRATEGY.md](docs/TEST_STRATEGY.md).
+## Test Coverage
 
-| Oblast | Smoke | Regression | Negative |
-|--------|:-----:|:----------:|:--------:|
+| Area | Smoke | Regression | Negative |
+|---|:---:|:---:|:---:|
 | Login (UI) | 2 | 1 | 4 |
 | Inventory (UI) | 2 | 6 | 1 |
 | Cart & Checkout (UI) | 2 | 2 | 3 |
 | Auth (API) | 1 | — | 1 |
 | Booking CRUD (API) | 2 | 5 | 3 |
 
-## Nálezy (Findings)
+Full coverage matrix: [docs/TEST_STRATEGY.md](docs/TEST_STRATEGY.md)
 
-Testy nejsou jen formální pokrytí — reálně našly bug v testované aplikaci, zdokumentovaný podle [bug report šablony](docs/BUG_REPORT_TEMPLATE.md):
+---
 
-| ID | Popis | Severity | Report |
+## Real Findings
+
+Tests are not just coverage metrics — the suite found a real defect in the test target:
+
+| ID | Description | Severity | Report |
 |---|---|---|---|
-| BUG-001 | `problem_user` — všechny produkty mají identický rozbitý obrázek místo unikátních fotek | Major | [docs/findings/BUG-001_problem_user_broken_images.md](docs/findings/BUG-001_problem_user_broken_images.md) |
+| BUG-001 | `problem_user` account shows identical broken images for all products instead of unique photos | Major | [docs/findings/BUG-001_problem_user_broken_images.md](docs/findings/BUG-001_problem_user_broken_images.md) |
 
-## Prerequisites
+---
 
-- **Python** 3.11+
-- **Java** 8+ (pro Allure CLI)
-- **Node.js** (volitelné, pro `npm install -g allure-commandline`)
-- **OS:** Windows, Linux, macOS
+## Postman + Newman
 
-## Postman + Newman (API testy nástrojem)
+The same Restful Booker API is tested a second time using Postman collections, demonstrating tool-level API testing alongside code-level (pytest/requests).
 
-Stejná doména (Restful Booker) testovaná druhým nástrojem — Postman kolekce
-běžící v CI přes Newman. Ukazuje API testing jako nástrojovou dovednost
-vedle kódové (pytest/requests).
-
-Kolekce: chaining přes env proměnné (auth token → bookingId → ověření dat),
-assertiony v Tests tabu, negative cases (neexistující booking → 404, bez auth → 403).
+- Request chaining via environment variables (auth token → bookingId → data assertion)
+- Assertions in the Tests tab, negative cases (missing booking → 404, no auth → 403)
+- CI runs the collection automatically via Newman in a separate job
 
 ```bash
-# Lokální běh přes Newman
 newman run postman/Restful_Booker.postman_collection.json -e postman/environment.json
-
-# Import do Postman GUI:
-# File → Import → postman/Restful_Booker.postman_collection.json
 ```
 
-CI spouští kolekci automaticky v samostatném `postman` jobu (viz badge nahoře).
+---
 
-## Dokumentace
+## Documentation
 
-- [Test Strategy](docs/TEST_STRATEGY.md) — scope, typy testů, matice pokrytí
-- [Bug Report Template](docs/BUG_REPORT_TEMPLATE.md) — šablona pro reportování
-- [O projektu](docs/PROJECT.md) — kontext, motivace, co bych přidal v produkci
+- [Test Strategy](docs/TEST_STRATEGY.md)
+- [Bug Report Template](docs/BUG_REPORT_TEMPLATE.md)
+- [Project Context](docs/PROJECT.md)
 
-## Autor
+---
 
-**Steve** — QA Automation Engineer
-<!-- LinkedIn: https://linkedin.com/in/xxx -->
+## Author
+
+**Steve Rotrekl** — QA Automation Engineer
+[LinkedIn](https://linkedin.com/in/steve-rotrekl) · [GitHub](https://github.com/Srotrekl)
